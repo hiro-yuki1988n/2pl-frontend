@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>Community Fund</h2>
+<mat-dialog-content>
+  <form [formGroup]="CommunityFundForm">
+    
+    <mat-form-field appearance="fill">
+      <mat-label>Select Member</mat-label>
+      <mat-select formControlName="memberId">
+        <mat-option *ngFor="let member of members" [value]="member.id">
+          {{ member.name }}
+        </mat-option>
+      </mat-select> 
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Amount</mat-label>
+      <input matInput formControlName="amount" type="number" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Contributed At</mat-label>
+      <input matInput [matDatepicker]="picker1" formControlName="paymentDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Month</mat-label>
+      <mat-select formControlName="month">
+        <mat-option *ngFor="let m of months" [value]="m">{{ m }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button color="primary" (click)="onSave()">Save</button>
+</mat-dialog-actions>

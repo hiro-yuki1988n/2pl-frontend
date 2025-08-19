@@ -1,0 +1,105 @@
+<div class="expenditures-container">
+    <div class="header">
+        <div class="app-name">2PL PROF GROUP-22</div>
+        <div class="user-info" *ngIf="user">
+            <span>{{ user?.member?.name }}</span>
+            <button mat-icon-button matTooltip="Home" class="home-icon" aria-hidden="false"
+                aria-label="Example home icon" fontIcon="home" (click)="home()"><mat-icon>home</mat-icon>
+                </button>
+            <button mat-icon-button matTooltip="User Info" [matMenuTriggerFor]="userMenu"
+                aria-label="User Menu"><mat-icon>account_circle</mat-icon></button>
+
+            <mat-menu #userMenu="matMenu">
+                <button mat-menu-item (click)="changePassword()">
+                    <mat-icon>lock</mat-icon>
+                    <span>Change Password</span>
+                </button>
+                <button mat-menu-item (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    <span>Logout</span>
+                </button>
+            </mat-menu>
+        </div>
+    </div>
+    <div class="content">
+        <h4>GROUP EXIPENDITURES</h4>
+        <mat-form-field class="search">
+            <mat-label>Search</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="tafuta hapa" #input>
+        </mat-form-field>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                <td mat-cell *matCellDef="let expenditure"> {{ expenditure.id }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+                <td mat-cell *matCellDef="let expenditure"> {{ expenditure.amount }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateIssued">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Issued </th>
+                <td mat-cell *matCellDef="let expenditure">TSH {{ expenditure.dateIssued }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="expenseType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Expenditure Type </th>
+                <td mat-cell *matCellDef="let expenditure"> {{ expenditure.expenseType }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+                <td mat-cell *matCellDef="let expenditure"> {{ expenditure.description }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="isApproved">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Approval Status </th>
+                <td mat-cell *matCellDef="let expenditure">
+                    {{ expenditure.approved ? 'APPROVED' : 'DRAFT' }}
+                </td>
+
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let expenditure">
+                    <!-- Only visible if the logged-in user is an admin -->
+                    <ng-container *ngIf="isAdmin && !expenditure.approved">
+                        <button mat-icon-button color="primary" (click)="editExpense(expenditure)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="deleteExpense(expenditure)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Approve" color="primary"
+                            (click)="approveExpense(expenditure)">
+                            <mat-icon>check_circle</mat-icon>
+                        </button>
+                    </ng-container>
+                </td>
+            </ng-container>
+
+            <!-- Header and Row Definitions -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <!-- No Data Row -->
+            <tr class="mat-row" *matNoDataRow style="color: brown;">
+                <td class="mat-cell" colspan="7">No data matching the filter "{{ input?.value }}"</td>
+            </tr>
+        </table>
+
+        <!-- Paginator -->
+        <mat-paginator [pageSizeOptions]="[10, 20, 50, 100, 200, 500]" showFirstLastButtons></mat-paginator>
+
+        <button *ngIf="isAdmin" mat-fab color="primary" matTooltip="Toa Matumizi" class="btn-add-new"
+            (click)="addExpenditure()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+    <footer class="footer">
+        <p>&copy; Mkoba App - 2PL Prof Group-22. All rights reserved.</p>
+    </footer>
+</div>

@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>Record New Expenditure</h2>
+<mat-dialog-content> 
+  <form [formGroup]="expenseForm">
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Amount</mat-label>
+      <input matInput formControlName="amount" type="number" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Date Issued</mat-label>
+      <input matInput [matDatepicker]="picker1" formControlName="dateIssued" />
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Expenditure Type</mat-label>
+      <mat-select formControlName="expenseType">
+        <mat-option value="GROUP_EXPENSE">Group Expense</mat-option>
+        <mat-option value="SOCIAL_EXPENSE">Social Expense</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description" type="text" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button color="primary" (click)="onSave()">Save</button>
+</mat-dialog-actions>

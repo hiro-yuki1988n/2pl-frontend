@@ -1,0 +1,485 @@
+<div class="member-profile-container">
+    <div class="header">
+        <div class="app-name">2PL PROF GROUP-22</div>
+        <div class="user-info" *ngIf="user">
+            <span>{{ user?.member?.name }}</span>
+            <button mat-icon-button matTooltip="Home" class="home-icon" aria-hidden="false"
+                aria-label="Example home icon" fontIcon="home" (click)="home()"><mat-icon>home</mat-icon>
+            </button>
+            <button mat-icon-button matTooltip="User Info" [matMenuTriggerFor]="userMenu"
+                aria-label="User Menu"><mat-icon>account_circle</mat-icon></button>
+
+            <mat-menu #userMenu="matMenu">
+                <button mat-menu-item (click)="changePassword()">
+                    <mat-icon>lock</mat-icon>
+                    <span>Change Password</span>
+                </button>
+                <button mat-menu-item (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    <span>Logout</span>
+                </button>
+            </mat-menu>
+        </div>
+    </div>
+    <div class="main-division">
+        <div class="profile-details">
+            <h4>MEMBERS' PROFILE</h4>
+
+            <div class="photo-upload">
+                <img *ngIf="photoBase64" [src]="photoBase64" alt="Passport Photo" class="passport-image">
+                <input type="file" (change)="onFileSelected($event)" />
+                <button (click)="uploadPhoto()">Upload Image</button>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">ID:</span>
+                <span class="value">{{ user?.member?.id }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">NAME:</span>
+                <span class="value">{{ user?.member?.name }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">GENDER:</span>
+                <span class="value">{{ user?.member?.gender }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">ROLE:</span>
+                <span class="value">{{ user?.member?.memberRole }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">E-MAIL:</span>
+                <span class="value">{{ user?.member?.email }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">MOBILE PHONE:</span>
+                <span class="value">{{ user?.member?.phone }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">DATE JOINED:</span>
+                <span class="value">{{ user?.member?.joiningDate }}</span>
+            </div>
+        </div>
+
+        <div class="content">
+            <h4>MEMBERS' RECORDS</h4>
+            <mat-tab-group animationDuration="1000ms">
+
+                <mat-tab label="Shares">
+                    <div class="content-card">
+                        <div class="year-selector">
+                            <label for="yearSelect">Select Year:</label>
+                            <select id="yearSelect" [(ngModel)]="selectedYear" (change)="onDateChange()">
+                                <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+                            </select>
+                        </div>
+
+                        <div class="content-summary">
+                            <mat-card class="stat-card">
+                                <mat-card-title>Your Total Shares:</mat-card-title>
+                                <mat-card-content>
+                                    <h2 *ngIf="memberShares !== null; else loading">
+                                        {{ memberShares | number: '1.0-2' }} TZS
+                                    </h2>
+                                    <ng-template #loading>
+                                        <mat-progress-spinner diameter="30" mode="indeterminate"></mat-progress-spinner>
+                                    </ng-template>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        <div *ngIf="isWithdrawPeriod">
+                            <button mat-button (click)="withdraw()" class="btn-withdraw">Click to Withdraw</button>
+                        </div>
+
+                        <div class="header-info">
+                            <h4>Your Record of Dividends</h4>
+                        </div>
+                        <table mat-table [dataSource]="yddataSource" class="mat-elevation-z8" matSort>
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                                <td mat-cell *matCellDef="let yearlyDividend"> {{ yearlyDividend.id }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Member Name </th>
+                                <td mat-cell *matCellDef="let yearlyDividend"> {{ yearlyDividend.member.name }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="allocatedAmount">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Allocated Amount </th>
+                                <td mat-cell *matCellDef="let yearlyDividend">TSH {{ yearlyDividend.allocatedAmount }}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="withdrawnAmount">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Withdrawn Amount </th>
+                                <td mat-cell *matCellDef="let yearlyDividend">TSH {{ yearlyDividend.withdrawnAmount }}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="remainingBalance">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Remained Balance </th>
+                                <td mat-cell *matCellDef="let yearlyDividend">TSH {{ yearlyDividend.remainingBalance }}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="approved">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Approval Status </th>
+                                <td mat-cell *matCellDef="let yearlyDividend"> {{ yearlyDividend.approved }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="year">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Year </th>
+                                <td mat-cell *matCellDef="let yearlyDividend"> {{ yearlyDividend.year }} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="ydDisplayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: ydDisplayedColumns;"></tr>
+                        </table>
+
+                        <mat-paginator [pageSizeOptions]="[10, 20, 50, 100, 200, 500]"
+                            showFirstLastButtons></mat-paginator>
+                    </div>
+                </mat-tab>
+
+                <mat-tab label="Contributions">
+                    <div class="content-card">
+                        <div class="year-selector">
+                            <label for="yearSelect">Select Year:</label>
+                            <select id="yearSelect" [(ngModel)]="selectedYear" (change)="onDateChange()">
+                                <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+                            </select>
+                        </div>
+
+                        <div class="content-summary">
+                            <mat-card class="stat-card">
+                                <mat-card-title>Total Contributions:</mat-card-title>
+                                <mat-card-content>
+                                    <h2 *ngIf="memberContributions !== null; else loading">
+                                        {{ memberContributions | number:'1.0-2' }} TZS
+                                    </h2>
+                                    <ng-template #loading>
+                                        <mat-progress-spinner diameter="30" mode="indeterminate"></mat-progress-spinner>
+                                    </ng-template>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        <div class="header-info">
+                            <h4>Your Monthly Contributions</h4>
+                        </div>
+                        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                                <td mat-cell *matCellDef="let contribution"> {{ contribution.id }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Member Name </th>
+                                <td mat-cell *matCellDef="let contribution"> {{ contribution.member.name }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="amount">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+                                <td mat-cell *matCellDef="let contribution">TSH {{ contribution.amount }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="paymentDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Paid </th>
+                                <td mat-cell *matCellDef="let contribution"> {{ contribution.paymentDate }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="month">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Month </th>
+                                <td mat-cell *matCellDef="let contribution"> {{ contribution.month }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="penaltyAmount">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Penalty </th>
+                                <td mat-cell *matCellDef="let contribution">TSH {{ contribution.penaltyAmount }} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+
+                        <mat-paginator [pageSizeOptions]="[10, 20, 50, 100, 200, 500]"
+                            showFirstLastButtons></mat-paginator>
+                    </div>
+                </mat-tab>
+
+                <mat-tab label="Community Funds">
+                    <div class="content-card">
+                        <div class="year-selector">
+                            <label for="yearSelect">Select Year:</label>
+                            <select id="yearSelect" [(ngModel)]="selectedYear" (change)="onDateChange()">
+                                <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+                            </select>
+                        </div>
+
+                        <div class="content-summary">
+                            <mat-card class="stat-card">
+                                <mat-card-title>Total Community Funds:</mat-card-title>
+                                <mat-card-content>
+                                    <h2 *ngIf="memberSocialFunds !== null; else loading">
+                                        {{ memberSocialFunds | number:'1.0-2' }} TZS
+                                    </h2>
+                                    <ng-template #loading>
+                                        <mat-progress-spinner diameter="30" mode="indeterminate"></mat-progress-spinner>
+                                    </ng-template>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        <div class="header-info">
+                            <h4>Your CF Contributions</h4>
+                        </div>
+                        <table mat-table [dataSource]="cfdataSource" class="mat-elevation-z8" matSort>
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                                <td mat-cell *matCellDef="let socialFund"> {{ socialFund.id }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Member Name </th>
+                                <td mat-cell *matCellDef="let socialFund"> {{ socialFund.member.name }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="amount">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+                                <td mat-cell *matCellDef="let socialFund">TSH {{ socialFund.amount }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="paymentDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Paid </th>
+                                <td mat-cell *matCellDef="let socialFund"> {{ socialFund.paymentDate }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="month">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Month </th>
+                                <td mat-cell *matCellDef="let socialFund"> {{ socialFund.month }} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="cfDisplayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: cfDisplayedColumns;"></tr>
+                        </table>
+
+                        <mat-paginator [pageSizeOptions]="[10, 20, 50, 100, 200, 500]"
+                            showFirstLastButtons></mat-paginator>
+                    </div>
+                </mat-tab>
+
+                <mat-tab label="Loans">
+                    <div class="content-card">
+                        <div class="year-selector">
+                            <label for="yearSelect">Select Year:</label>
+                            <select id="yearSelect" [(ngModel)]="selectedYear" (change)="onDateChange()">
+                                <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+                            </select>
+                        </div>
+
+                        <div class="content-summary">
+                            <mat-card class="stat-card">
+                                <mat-card-title>Total Standing Loan:</mat-card-title>
+                                <mat-card-content>
+                                    <h2 *ngIf="memberStandingLoans !== null; else loading">
+                                        {{ memberStandingLoans | number:'1.0-2' }} TZS
+                                    </h2>
+                                    <ng-template #loading>
+                                        <mat-progress-spinner diameter="30" mode="indeterminate"></mat-progress-spinner>
+                                    </ng-template>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        <div class="header-info">
+                            <h4>Your Record of Loans</h4>
+                        </div>
+                        <table mat-table [dataSource]="ldataSource" class="mat-elevation-z8" matSort>
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                                <td mat-cell *matCellDef="let loan"> {{ loan.id }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Member Name </th>
+                                <td mat-cell *matCellDef="let loan"> {{ loan.member.name }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="amount">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+                                <td mat-cell *matCellDef="let loan">TSH {{ loan.amount }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="interestRate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Interest </th>
+                                <td mat-cell *matCellDef="let loan"> {{ loan.interestAmount }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="startDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
+                                <td mat-cell *matCellDef="let loan"> {{ loan.startDate }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="dueDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
+                                <td mat-cell *matCellDef="let loan"> {{ loan.dueDate }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="isPaid">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Is Paid </th>
+                                <td mat-cell *matCellDef="let loan"> {{ loan.isPaid }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="penalty">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Penalty </th>
+                                <td mat-cell *matCellDef="let loan">TSH {{ loan.penaltyAmount }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="payableAmount">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Payable Amount </th>
+                                <td mat-cell *matCellDef="let loan">TSH {{ loan.payableAmount }} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="lDisplayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: lDisplayedColumns;"></tr>
+                        </table>
+
+                        <mat-paginator [pageSizeOptions]="[10, 20, 50, 100, 200, 500]"
+                            showFirstLastButtons></mat-paginator>
+                    </div>
+                </mat-tab>
+
+                <mat-tab label="Loan Payment">
+                    <div class="content-card">
+                        <div class="year-selector">
+                            <label for="yearSelect">Select Year:</label>
+                            <select id="yearSelect" [(ngModel)]="selectedYear" (change)="onDateChange()">
+                                <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+                            </select>
+                        </div>
+                        <div class="header-info">
+                            <h4>Your Record of Loan Payment</h4>
+                        </div>
+                        <table mat-table [dataSource]="lpdataSource" class="mat-elevation-z8" matSort>
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                                <td mat-cell *matCellDef="let loanPayment"> {{ loanPayment.id }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Member Name </th>
+                                <td mat-cell *matCellDef="let loanPayment"> {{ loanPayment.loan.member.name }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="amount">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount of Loan </th>
+                                <td mat-cell *matCellDef="let loanPayment">TSH {{ loanPayment.loan.amount }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="amountPaid">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount Paid </th>
+                                <td mat-cell *matCellDef="let loanPayment"> {{ loanPayment.amount }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="payDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Paid </th>
+                                <td mat-cell *matCellDef="let loanPayment"> {{ loanPayment.payDate }} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="description">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+                                <td mat-cell *matCellDef="let loanPayment"> {{ loanPayment.description }} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="lpDisplayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: lpDisplayedColumns;"></tr>
+                        </table>
+
+                        <mat-paginator [pageSizeOptions]="[10, 20, 50, 100, 200, 500]"
+                            showFirstLastButtons></mat-paginator>
+                    </div>
+                </mat-tab>
+
+                <mat-tab label="Penalties">
+                    <div class="content-card">
+                        <div class="year-selector">
+                            <label for="yearSelect">Select Year:</label>
+                            <select id="yearSelect" [(ngModel)]="selectedYear" (change)="onDateChange()">
+                                <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+                            </select>
+                        </div>
+
+                        <div class="content-summary">
+                            <mat-card class="stat-card">
+                                <mat-card-title>Your Total Penalties:</mat-card-title>
+                                <mat-card-content>
+                                    <h2 *ngIf="memberPenalties !== null; else loading">
+                                        {{ memberPenalties | number:'1.0-2' }} TZS
+                                    </h2>
+                                    <ng-template #loading>
+                                        <mat-progress-spinner diameter="30" mode="indeterminate"></mat-progress-spinner>
+                                    </ng-template>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        <div class="header-info">
+                            <h4>Your Record of Penalties</h4>
+                        </div>
+                        <mat-tab-group>
+                            <mat-tab label="Late Contribution Penalties">
+                                <div class="content-card">
+                                    <table mat-table [dataSource]="lContriDataSource" class="mat-elevation-z8" matSort>
+                                        <ng-container matColumnDef="id">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                                            <td mat-cell *matCellDef="let contribution"> {{ contribution.id }} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="name">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Member Name </th>
+                                            <td mat-cell *matCellDef="let contribution"> {{ contribution.member.name }}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="amount">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+                                            <td mat-cell *matCellDef="let contribution">TSH {{ contribution.amount }}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="paymentDate">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Paid </th>
+                                            <td mat-cell *matCellDef="let contribution"> {{ contribution.paymentDate }}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="month">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Month </th>
+                                            <td mat-cell *matCellDef="let contribution"> {{ contribution.month }} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="penaltyAmount">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Penalty </th>
+                                            <td mat-cell *matCellDef="let contribution">TSH {{
+                                                contribution.penaltyAmount }}
+                                            </td>
+                                        </ng-container>
+
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                    </table>
+                                    <mat-paginator [pageSizeOptions]="[10, 20, 50, 100, 200, 500]"
+                                        showFirstLastButtons></mat-paginator>
+                                </div>
+                            </mat-tab>
+                            <mat-tab label="Late Loan Payment Penalties">
+                                <div class="content-card">
+                                    <table mat-table [dataSource]="ldataSource" class="mat-elevation-z8" matSort>
+                                        <ng-container matColumnDef="id">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                                            <td mat-cell *matCellDef="let loan"> {{ loan.id }} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="name">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Member Name </th>
+                                            <td mat-cell *matCellDef="let loan"> {{ loan.member.name }} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="amount">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+                                            <td mat-cell *matCellDef="let loan">TSH {{ loan.amount }} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="dueDate">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
+                                            <td mat-cell *matCellDef="let loan"> {{ loan.dueDate }} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="penalty">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Penalty </th>
+                                            <td mat-cell *matCellDef="let loan">TSH {{ loan.penaltyAmount }} </td>
+                                        </ng-container>
+
+                                        <tr mat-header-row *matHeaderRowDef="pDisplayedColumns"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: pDisplayedColumns;"></tr>
+                                    </table>
+                                    <mat-paginator [pageSizeOptions]="[10, 20, 50, 100, 200, 500]"
+                                        showFirstLastButtons></mat-paginator>
+                                </div>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+    <footer class="footer">
+        <p>&copy; Mkoba App - 2PL Prof Group-22. All rights reserved.</p>
+    </footer>
+</div>

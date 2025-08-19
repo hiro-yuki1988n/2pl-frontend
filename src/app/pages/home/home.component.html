@@ -1,0 +1,68 @@
+<div class="container-fluid home-container">
+  <div class="header">
+    <div class="app-name">2PL PROF GROUP-22</div>
+    <div class="user-info" *ngIf="user">
+      <span>{{ user?.member?.name }}</span>
+      <button mat-icon-button matTooltip="Change Mode" (click)="toggleTheme()">
+        <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Full Screen" (click)="toggleFullScreen()" aria-label="Toggle fullscreen">
+        <mat-icon>{{ isFullScreen ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Admin Settings" *ngIf="isAdmin" class="icon-users"
+        (click)="viewUsers()"><mat-icon>admin_panel_settings</mat-icon></button>
+      <button mat-icon-button matTooltip="User Info" [matMenuTriggerFor]="userMenu"
+        aria-label="User Menu"><mat-icon>account_circle</mat-icon></button>
+        
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="changePassword()">
+          <mat-icon>lock</mat-icon>
+          <span>Change Password</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+  <div class="card-grid-container">
+    <div class="date-select-section">
+      <label>Select Month and Year to change details</label>
+      <label>
+        Select Month:
+        <select [(ngModel)]="selectedMonth" (change)="onDateChange()">
+          <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
+        </select>
+      </label>
+      <label style="margin-left: 1rem;">
+        Select Year:
+        <select [(ngModel)]="selectedYear" (change)="onDateChange()">
+          <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="card-grid">
+      <a *ngFor="let stat of stats" [routerLink]="stat.link" class="stat-card-link"
+        style="text-decoration: none; color: inherit;">
+        <mat-card class="stat-card">
+          <mat-card-title>{{ stat.title }}</mat-card-title>
+          <mat-card-content>
+            <h2>{{ stat.value | number:'1.0-2' }}</h2>
+          </mat-card-content>
+        </mat-card>
+      </a>
+    </div>
+  </div>
+  <div class="graph-section">
+    <h3>Shares per member - {{ selectedYear }}</h3>
+    <ngx-charts-bar-vertical [view]="[1200, 600]" [scheme]="colorScheme" [results]="shareData" [gradient]="false"
+      [xAxis]="true" [yAxis]="true" [legend]="false" [showXAxisLabel]="true" [showYAxisLabel]="true" xAxisLabel="Member"
+      yAxisLabel="Shares" [barPadding]="10" [roundEdges]="true">
+    </ngx-charts-bar-vertical>
+  </div>
+  <footer class="footer">
+    <p>&copy; Mkoba App - 2PL Prof Group-22. All rights reserved.</p>
+  </footer>
+</div>

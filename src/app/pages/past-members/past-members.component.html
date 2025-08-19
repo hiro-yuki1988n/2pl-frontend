@@ -1,0 +1,91 @@
+<div class="content">
+    <h4>PAST MEMBERS</h4>
+    <mat-form-field class="search">
+        <mat-label>Search</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="tafuta hapa" #input>
+    </mat-form-field>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="color: blue;"> ID </th>
+            <td mat-cell *matCellDef="let member"> {{ member.id }} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="color: blue;"> Name </th>
+            <td mat-cell *matCellDef="let member"> {{ member.name }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="gender">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="color: blue;"> Gender </th>
+            <td mat-cell *matCellDef="let member"> {{ member.gender }} </td>
+        </ng-container>
+
+        <!-- Phone Column -->
+        <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="color: blue;"> Phone </th>
+            <td mat-cell *matCellDef="let member"> {{ member.phone }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="joiningDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="color: blue;"> Date Joined </th>
+            <td mat-cell *matCellDef="let member"> {{ member.joiningDate }} </td>
+        </ng-container>
+
+        <!-- Role Column -->
+        <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="color: blue;"> Role </th>
+            <td mat-cell *matCellDef="let member"> {{ member.memberRole }} </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="isActive">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="color: blue;"> Active </th>
+            <td mat-cell *matCellDef="let member"> {{ member.isActive }} </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="removedAt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="color: blue;"> Removed At </th>
+            <td mat-cell *matCellDef="let member"> {{ member.removedAt }} </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="reason">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="color: blue;"> Reason </th>
+            <td mat-cell *matCellDef="let member"> {{ member.removeReason }} </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef style="color: blue;">Actions</th>
+            <td mat-cell *matCellDef="let member">
+                <!-- Only visible if the logged-in user is an admin -->
+                <ng-container *ngIf="isAdmin">
+                    <button mat-icon-button matTooltip="Restore Member" color="primary" (click)="restoreMember(member)">
+                        <mat-icon>restore</mat-icon>
+                    </button>
+                </ng-container>
+            </td>
+        </ng-container>
+
+        <!-- Header and Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- No Data Row -->
+        <tr class="mat-row" *matNoDataRow style="color: brown;">
+            <td class="mat-cell" colspan="7">No data matching the filter "{{ input?.value }}"</td>
+        </tr>
+    </table>
+
+    <!-- Paginator -->
+    <mat-paginator [pageSizeOptions]="[10, 20, 50, 100, 200, 500]" showFirstLastButtons></mat-paginator>
+
+    <button *ngIf="isAdmin" mat-fab color="primary" matTooltip="Ondoa Mwanachama" class="btn-add-new"
+        (click)="removeMember()">
+        <mat-icon>remove</mat-icon>
+    </button>
+</div>

@@ -1,0 +1,45 @@
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+mat-dialog-content {
+  /* overflow: hidden; */
+  max-height: 65vh;
+  /* au ongeza au punguza kulingana na screen */
+  overflow: auto;
+}
+
+mat-form-field {
+  display: block;
+}
+
+mat-dialog-actions {
+  margin-top: 16px;
+  padding-top: 8px;
+  border-top: 1px solid #eee;
+}
+
+button {
+  min-width: 80px;
+}
+
+mat-dialog-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+mat-select {
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px; /* Space between the two fields */
+  margin-bottom: 16px;
+}
+
+.half-width {
+  flex: 1;
+}

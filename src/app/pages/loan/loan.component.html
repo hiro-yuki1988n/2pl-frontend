@@ -1,0 +1,119 @@
+<div class="loans-container">
+    <div class="header">
+        <div class="app-name">2PL PROF GROUP-22</div>
+        <div class="user-info" *ngIf="user">
+            <span>{{ user?.member?.name }}</span>
+            <button mat-icon-button matTooltip="Home" class="home-icon" aria-hidden="false"
+                aria-label="Example home icon" fontIcon="home" (click)="home()"><mat-icon>home</mat-icon>
+                </button>
+            <button mat-icon-button matTooltip="User Info" [matMenuTriggerFor]="userMenu"
+                aria-label="User Menu"><mat-icon>account_circle</mat-icon></button>
+
+            <mat-menu #userMenu="matMenu">
+                <button mat-menu-item (click)="changePassword()">
+                    <mat-icon>lock</mat-icon>
+                    <span>Change Password</span>
+                </button>
+                <button mat-menu-item (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    <span>Logout</span>
+                </button>
+            </mat-menu>
+        </div>
+    </div>
+    <div class="content">
+        <h4>RECORD OF LOANS</h4>
+        <div class="searchAndView">
+            <mat-form-field class="search">
+                <mat-label>Search</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+            </mat-form-field>
+            <button mat-button (click)="viewLoanPayments()">View Loan Payments</button>
+        </div>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                <td mat-cell *matCellDef="let loan"> {{ loan.id }} </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Member Name </th>
+                <td mat-cell *matCellDef="let loan"> {{ loan.member.name }} </td>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+                <td mat-cell *matCellDef="let loan">TSH {{ loan.amount }} </td>
+            </ng-container>
+            <ng-container matColumnDef="interestRate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Interest </th>
+                <td mat-cell *matCellDef="let loan"> {{ loan.interestAmount }} </td>
+            </ng-container>
+            <ng-container matColumnDef="startDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
+                <td mat-cell *matCellDef="let loan"> {{ loan.startDate }} </td>
+            </ng-container>
+            <ng-container matColumnDef="dueDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
+                <td mat-cell *matCellDef="let loan"> {{ loan.dueDate }} </td>
+            </ng-container>
+            <ng-container matColumnDef="isPaid">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Is Paid </th>
+                <td mat-cell *matCellDef="let loan"> {{ loan.isPaid }} </td>
+            </ng-container>
+            <ng-container matColumnDef="penalty">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Penalty </th>
+                <td mat-cell *matCellDef="let loan">TSH {{ loan.penaltyAmount }} </td>
+            </ng-container>
+            <ng-container matColumnDef="payableAmount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Payable Amount </th>
+                <td mat-cell *matCellDef="let loan">TSH {{ loan.payableAmount }} </td>
+            </ng-container>
+            <ng-container matColumnDef="unpaidAmount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Unpaid Amount </th>
+                <td mat-cell style="color: rgb(255, 0, 0);" *matCellDef="let loan">TSH {{ loan.unpaidAmount }} </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let loan">
+                    <!-- Always visible: View More -->
+                    <button mat-icon-button [disabled]="loan.member.id !== loggedInUserId && !isAdmin"
+                        (click)="viewMore(loan.member)" matTooltip="View More">
+                        <mat-icon>visibility</mat-icon>
+                    </button>
+
+                    <!-- Only visible if the logged-in user is an admin -->
+                    <ng-container *ngIf="isAdmin && !loan.isPaid">
+                        <button mat-icon-button color="primary" matTooltip="Edit record" (click)="editLoan(loan)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" matTooltip="Delete record" (click)="deleteLoan(loan)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Click to Pay" (click)="payLoan(loan)">
+                            <mat-icon>payment</mat-icon>
+                        </button>
+                    </ng-container>
+                </td>
+            </ng-container>
+
+            <!-- Header and Row Definitions -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <!-- No Data Row -->
+            <tr class="mat-row" *matNoDataRow style="color: brown;">
+                <td class="mat-cell" colspan="7">No data matching the filter "{{ input?.value }}"</td>
+            </tr>
+        </table>
+
+        <!-- Paginator -->
+        <mat-paginator [pageSizeOptions]="[10, 20, 50, 100, 200, 500]" showFirstLastButtons></mat-paginator>
+
+        <button *ngIf="isAdmin" mat-fab color="primary" matTooltip="Ongeza Mkopo" class="btn-add-new"
+            (click)="addLoan()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+    <footer class="footer">
+        <p>&copy; Mkoba App - 2PL Prof Group-22. All rights reserved.</p>
+    </footer>
+</div>

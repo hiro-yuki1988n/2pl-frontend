@@ -1,0 +1,56 @@
+<!-- <div class="login-container">
+  <h2>2PL Prof Group-22</h2>
+  <h3>Login</h3>
+
+  <form (ngSubmit)="login()">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" [(ngModel)]="email" name="email" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" [(ngModel)]="password" name="password" required>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Login</button>
+  </form>
+</div> -->
+
+<div class="login-container">
+  <div class="login-header">
+    <h1>2PL Prof Group-22</h1>
+    <div class="language-dropdown">
+      <button mat-button [matMenuTriggerFor]="langMenu">English</button>
+      <mat-menu #langMenu="matMenu">
+        <button mat-menu-item>Swahili</button>
+        <button mat-menu-item>English</button>
+      </mat-menu>
+    </div>
+  </div>
+
+  <div class="login-body">
+    <img src="assets/images/2pl_grp_losgo.png" alt="Group Icon" class="grp-icon" />
+
+    <form class="login-form" (ngSubmit)="login()">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Username</mat-label>
+        <input matInput type="text" [(ngModel)]="email" name="email" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" [(ngModel)]="password" name="password" required />
+      </mat-form-field>
+
+      <a class="forgot-password" href="#">Forgot password?</a>
+      <button mat-raised-button color="primary" type="submit">Sign In</button>
+    </form>
+  </div>
+
+  <div class="login-footer">
+    <p>Powered by 2PL Prof Group-22</p>
+  </div>
+
+</div>
+

@@ -1,0 +1,36 @@
+.content {
+  padding: 16px;
+  background-color: #b0aeae; 
+  /* max-width: 1000px; */
+  margin: 40px auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+  height: auto;
+  padding-top: 40px;
+}
+
+.search {
+  display: flex;
+}
+
+.btn-add-new {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background-color: #3f51b5;
+}
+
+.content h4 {
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.footer {
+  background-color: #dddee4;
+  color: rgb(146, 144, 144);
+  text-align: center;
+  padding: 1rem;
+  margin-top: auto;
+}

@@ -1,0 +1,49 @@
+/* Full width for form fields */
+.full-width {
+    width: 100%;
+  }
+  
+  /* Container spacing */
+  mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+  }
+  
+  /* Title styling */
+  mat-dialog-title {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 16px 24px 0 24px;
+  }
+
+  mat-form-field {
+  display: block;
+}
+  
+  /* Button spacing */
+  mat-dialog-actions {
+    padding: 16px 24px;
+  }
+  
+  mat-dialog-actions button {
+    margin-left: 8px;
+  }
+  
+  /* Responsive date pickers alignment */
+  .date-range {
+    display: flex;
+    gap: 16px;
+  }
+  
+  @media (max-width: 600px) {
+    .date-range {
+      flex-direction: column;
+    }
+  }
+
+  mat-select {
+  width: 100%;
+}
+  

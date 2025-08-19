@@ -1,0 +1,63 @@
+<div class="admin-page-container">
+  <div class="header">
+    <div class="app-name">2PL PROF GROUP-22</div>
+    <div class="user-info" *ngIf="user">
+      <span>{{ user?.member?.name }}</span>
+      <button mat-icon-button matTooltip="Home" class="home-icon" aria-hidden="false" aria-label="Example home icon"
+        fontIcon="home" (click)="home()"><mat-icon>home</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="User Info" [matMenuTriggerFor]="userMenu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="changePassword()">
+          <mat-icon>lock</mat-icon>
+          <span>Change Password</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="content">
+
+    <!-- Sidenav Layout NDANI ya content -->
+    <mat-sidenav-container class="inner-sidenav-container">
+      <mat-sidenav mode="side" opened>
+        <mat-toolbar>MENU</mat-toolbar>
+        <mat-nav-list>
+          <a mat-list-item routerLink="/admin-page/users" routerLinkActive="active-link">
+            <mat-icon>group</mat-icon>
+            <span>Users</span>
+          </a>
+          <a mat-list-item routerLink="/admin-page/common-funds" routerLinkActive="active-link">
+            <mat-icon>paid</mat-icon>
+            <span>Common Funds</span>
+          </a>
+          <a mat-list-item routerLink="/admin-page/past-members" routerLinkActive="active-link">
+            <mat-icon>person_off</mat-icon>
+            <span>Past Members</span>
+          </a>
+          <a mat-list-item (click)="insertEntryFee()">
+            <mat-icon>paid</mat-icon>
+            <span>Insert Entry Fee</span>
+          </a>
+        </mat-nav-list>
+      </mat-sidenav>
+
+      <mat-sidenav-content class="inner-sidenav-content">
+        <!-- Page-specific content hubadilika hapa -->
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; Mkoba App - 2PL Prof Group-22. All rights reserved.</p>
+  </footer>
+
+</div>

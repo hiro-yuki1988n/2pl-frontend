@@ -1,0 +1,59 @@
+<h2 mat-dialog-title>Add New Member</h2>
+<mat-dialog-content>
+  <form [formGroup]="memberForm">
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Gender</mat-label>
+        <mat-select formControlName="gender">
+          <mat-option value="MALE">M</mat-option>
+          <mat-option value="FEMALE">F</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Phone</mat-label>
+        <input matInput formControlName="phone" />
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Date Joined</mat-label>
+        <input matInput [matDatepicker]="picker1" formControlName="joiningDate" />
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="memberRole">
+          <mat-option value="CHAIRMAN">Chairman</mat-option>
+          <mat-option value="VICE_CHAIRMAN">Vice Chairman</mat-option>
+          <mat-option value="SECRETARY">Secretary</mat-option>
+          <mat-option value="VICE_SECRETARY">Vice Secretary</mat-option>
+          <mat-option value="ACCOUNTANT">Accountant</mat-option>
+          <mat-option value="ASSISTANT_ACCOUNTANT">Assistant Accountant</mat-option>
+          <mat-option value="SIGNATORY">Signatory</mat-option>
+          <mat-option value="MEMBER">Member</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button color="primary" (click)="onSave()">Save</button>
+</mat-dialog-actions>

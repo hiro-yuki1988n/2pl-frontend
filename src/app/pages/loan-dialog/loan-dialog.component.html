@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>Add Loan</h2>
+<mat-dialog-content> 
+  <form [formGroup]="loanForm">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Select Member</mat-label>
+      <mat-select formControlName="memberId">
+        <mat-option *ngFor="let member of members" [value]="member.id">
+          {{ member.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Amount</mat-label>
+      <input matInput formControlName="amount" type="number" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Interest Rate (%)</mat-label>
+      <input matInput formControlName="interestRate" type="number" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Start Date</mat-label>
+      <input matInput [matDatepicker]="picker1" formControlName="startDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Due Date</mat-label>
+      <input matInput [matDatepicker]="picker2" formControlName="dueDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button color="primary" (click)="onSave()">Save</button>
+</mat-dialog-actions>

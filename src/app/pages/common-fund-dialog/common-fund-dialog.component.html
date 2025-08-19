@@ -1,0 +1,37 @@
+<h2 mat-dialog-title>Common Fund</h2>
+<mat-dialog-content>
+  <form [formGroup]="CommonFundForm">
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Amount</mat-label>
+      <input matInput formControlName="amount" type="number" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Source Type</mat-label>
+      <mat-select formControlName="sourceType">
+        <mat-option *ngFor="let m of sourceTypes" [value]="m">{{ m }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Recorded At</mat-label>
+      <input matInput [matDatepicker]="picker1" formControlName="entryDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Description</mat-label>
+        <input matInput formControlName="description" type="text" />
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button color="primary" (click)="onSave()">Save</button>
+</mat-dialog-actions>
+
+ 

@@ -1,0 +1,99 @@
+.loans-container {
+    justify-content: space-between;
+    align-items: center;
+    background-color: #dddee4;
+    color: white;
+    padding: 16px;
+    /* width: 100%; */
+    flex-direction: column;
+    min-height: 100vh;
+}
+ 
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: #454c79;
+  color: white;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+}
+
+.app-name {
+  font-size: 24px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-info {
+  display: flex;
+  flex-shrink: 0; /* Prevent shrinking on small screens */
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+  /* overflow-x: auto; Optional scroll if space is tight */
+  max-width: 60vw;  /* Prevent it from going off screen */
+}
+
+.user-info button {
+    margin-left: 10px;
+    color: #3f51b5;
+    background-color: white;
+}
+
+.content {
+    padding: 16px;
+    /* color: #ccc; */
+    background-color: #b0aeae;
+    /* max-width: 1000px; */
+    margin: 40px auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+    height: auto;
+    padding-top: 40px;
+}
+
+.searchAndView {
+    display: flex;
+    justify-content: space-between;
+}
+
+.searchAndView button {
+    margin-left: 10px;
+    color: #3f51b5;
+    background-color: rgb(233, 230, 230);
+    width: 100%;
+    border-radius: 8px;
+    height: 55px;
+}
+
+.search {
+    display: flex;
+    width: 100%;
+}
+
+.btn-add-new {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    background-color: #3f51b5;
+}
+
+.footer {
+    background-color: #dddee4;
+    color: rgb(146, 144, 144);
+    text-align: center;
+    padding: 1rem;
+    margin-top: auto;
+}
