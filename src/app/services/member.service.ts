@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MemberService {
 
-  private url = 'http://localhost:7080/api/members';
+  private url = environment.apiUrl;
 
   constructor(private apollo: Apollo, private http: HttpClient) { }
 

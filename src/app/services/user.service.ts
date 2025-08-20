@@ -50,29 +50,7 @@ export class UserService {
       }
     });
   }
-
-  //  createUser(userData: { fullName: string; email: string; password: string; phoneNumber: string }) {
-  //   const CREATE_USER = gql`
-  //     mutation CreateUser($fullName: String!, $email: String!, $password: String!, $phoneNumber: String!) {
-  //       createUser(fullName: $fullName, email: $email, password: $password, phoneNumber: $phoneNumber) {
-  //         id
-  //         fullName
-  //         email
-  //         password
-  //         phoneNumber
-  //       }
-  //    }
-  //  `;
-  //   return this.apollo.mutate({
-  //     mutation: CREATE_USER,
-  //     variables: {
-  //       fullName: userData.fullName,
-  //       email: userData.email,
-  //       password: userData.password,
-  //       phoneNumber: userData.phoneNumber
-  //     }
-  //   });
-  // }
+    
 
   getAllUsers(): Observable<any[]> {
     return this.apollo.watchQuery({
