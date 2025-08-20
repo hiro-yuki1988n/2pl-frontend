@@ -70,7 +70,8 @@ const routes: Routes = [
 ];
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:7080/graphql',
+  uri: 'https://twopl-backend-16sl.onrender.com/graphql',
+  // uri: 'http://localhost:7080/graphql',
 });
 
 // Authenticate every request with token from localStorage

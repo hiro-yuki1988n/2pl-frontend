@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment.prod';
 export class MemberService {
 
   private url = environment.apiUrl;
+  // private url = 'http://localhost:7080/api/members';
 
   constructor(private apollo: Apollo, private http: HttpClient) { }
 
